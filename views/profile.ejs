@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile</title>
+     <link rel="stylesheet" href="css/style2.css">
+   
+</head>
+
+<body>
+    <header>
+        <div class="leftHeader">welcome <%= user.username %></div> <a class="rightHeader" href="auth/logout"> logout</a>
+    </header>
+    <main>
+        <div class="title">  <p> WebAuthn and fido2</p> <p class="blueTitle">demo</p>
+        </div>
+        <div class="credentialsContainer">
+            <div class="credentialsHeader">your credentials</div>
+            <div class="credentials">
+              <b>credId :</b><%= user.credentials[0]?.credId %><br/>
+              <b>encoded PublicKey :</b><%= user.credentials[0]?.publicKey %><br/>
+              <b>counter :</b><%= user.credentials[0]?.counter %><br/>
+              
+              </div>
+        </div>
+    </main>
+</body>
+
+</html>

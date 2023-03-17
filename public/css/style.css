@@ -1,0 +1,158 @@
+body {
+    font-family: "Roboto Mono", monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+   align-items: center;
+    background-color: rgb(6 5 6);
+    height: 80%;
+}
+
+.form_container {
+    
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: white;
+    height: 140px;
+    border-bottom: blue solid 2px;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(24, 23, 31);
+}
+
+
+input {
+    color: white;
+    padding: 0 2 0 12;
+    background-color: #494848;
+    border-radius: 6px;
+    outline: none;
+    height: 40px;
+    border: 3px solid #494848;
+    width: 60%;
+    max-width: 444px;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+.form {
+
+    
+    overflow: hidden;
+}
+
+button {
+   
+    color: white;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 18px 28px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background-color: #3a3dff;
+    border: 1px solid #3a3dff;
+    transition: 0.2s all;
+
+}
+
+#progress {
+
+    align-self: flex-start;
+    width: 50%;
+    height: 3px;
+    border-radius: 4px;
+    background-color: #b4b4b4;
+}
+
+button:hover {
+    color: #3a3dff;
+    background-color: aliceblue;
+    border-radius: 7px;
+}
+
+.button_container {
+    margin-top: 30px;
+    display: flex;
+    color: rgb(46, 46, 46);
+    justify-content: space-around;
+    width: 200%;
+    align-items: center;
+    align-content: center;
+
+}
+
+.button_container>div {
+    font-size: 15px ;
+    color: #b4b4b4;
+    border-radius: 12px;
+    padding: 5px 12px 5px 12px ;
+
+}
+
+.current {
+    font-size: xx-large !important;
+    color: white;
+    border: solid 1px white !important;
+    border-radius: 12px !important;
+    padding: 16px 20px 16px 20px !important;
+}
+ .title{
+     color: white;
+     font-size: 18px;
+     width: 750px;
+ }
+ #message{
+    position: absolute;
+    left: 50%; 
+    display: none;
+    transform: translateX(-50%);
+     top: 12px;
+     color: rgb(0, 0, 0);
+     background-color: rgb(214, 71, 71);
+     border: 1px solid rgb(140, 72, 72);
+     border-radius: 2px;
+     padding: 10px;
+
+ }
+ #successMessage{
+    position: absolute;
+    left: 50%; 
+    display: none;
+    transform: translateX(-50%);
+     top: 12px;
+     color: rgb(0, 0, 0);
+     background-color: #3a3dff;
+     border: 1px solid rgb(229, 232, 237);
+     border-radius: 2px;
+     padding: 10px;
+ }
+ .smalltxt{
+     font-size: smaller;
+     color: #636363;
+     border-bottom: #494848 solid 0.5px;
+     cursor: pointer;
+ }
+ #canvas{
+     width: 300px!important;
+     height: auto!important;
+     margin: auto;
+     
+ }
+ #canvasContainer{
+     position: absolute;
+     
+     width: 100%;
+     height: 100vh;
+     background-color: #29295563;
+     
+ }
+ @media only screen and (max-width: 600px) {
+    .title {
+      width: 70%;
+    }
+    .form_container{
+        width: 100%;
+    }
+  }

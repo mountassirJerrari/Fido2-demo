@@ -1,119 +1,71 @@
-/**
- * This is the main Node.js server script for your project
- * Check out the two endpoints this back-end API provides in fastify.get and fastify.post below
- */
+const express = require("express");
+const app = express();
+const crypto = require('crypto')
+const base64 = require('base64-arraybuffer')
+const http = require('http')
+var cors = require("cors");
+const socketio = require('socket.io')
+const User = require('./models/user')
+const { auth ,guest } = require("./middlewares/middlewares");
+const authRouter = require("./routes/auth.js");
+const connectDB = require("./db/connect.js");
+const { sessionMiddleware ,wrap } = require("./middlewares/sessionMiddleware");
+require("dotenv").config();
+var corsOptions = {
+  origin: "*",
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,   
+};
+app.use(cors(corsOptions));
+// starting the server
+const port = process.env.PORT || 3000;
 
-const path = require("path");
+//middleware
 
-// Require the fastify framework and instantiate it
-const fastify = require("fastify")({
-  // Set this to true for detailed logging:
-  logger: false,
+app.use(express.json());
+app.use(express.static("./public"));
+app.set("view engine", "ejs");
+app.use(sessionMiddleware);
+app.use(express.json());
+//routes
+app.use("/auth", authRouter);
+
+app.get("/test", (req, res) => {
+  req.session.test = "yep the session is shared"
+  res.json({ DFSDF: "dqdqsd" });
 });
 
-// ADD FAVORITES ARRAY VARIABLE FROM TODO HERE
 
-// Setup our static files
-fastify.register(require("@fastify/static"), {
-  root: path.join(__dirname, "public"),
-  prefix: "/", // optional: default '/'
+app.get("/profile", auth, async (req, res) => {
+  
+  const user = await User.findOne({username : req.session.user.username })
+  res.render("profile", { user  });
 });
 
-// Formbody lets us parse incoming forms
-fastify.register(require("@fastify/formbody"));
+app.get("/",guest, (req, res) => res.render("index"));
 
-// View is a templating manager for fastify
-fastify.register(require("@fastify/view"), {
-  engine: {
-    handlebars: require("handlebars"),
-  },
-});
 
-// Load and parse SEO data
-const seo = require("./src/seo.json");
-if (seo.url === "glitch-default") {
-  seo.url = `https://${process.env.PROJECT_DOMAIN}.glitch.me`;
-}
-
-/**
- * Our home page route
- *
- * Returns src/pages/index.hbs with data built into it
- */
-fastify.get("/", function (request, reply) {
-  // params is an object we'll pass to our handlebars template
-  let params = { seo: seo };
-
-  // If someone clicked the option for a random color it'll be passed in the querystring
-  if (request.query.randomize) {
-    // We need to load our color data file, pick one at random, and add it to the params
-    const colors = require("./src/colors.json");
-    const allColors = Object.keys(colors);
-    let currentColor = allColors[(allColors.length * Math.random()) << 0];
-
-    // Add the color properties to the params object
-    params = {
-      color: colors[currentColor],
-      colorError: null,
-      seo: seo,
-    };
+let server=null
+let io=null
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URl);
+    server = http.createServer(app)
+    io = socketio(server,{
+      cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+        allowedHeaders: ["my-custom-header"],
+        credentials: true
+      }
+    });
+    server.listen(port,"192.168.0.172", () => console.log(`Server is listening port ${port}...`));
+    io.use(wrap(sessionMiddleware));
+    module.exports.io = io
+    require('./ws/index')
+  } catch (error) {
+    console.log(error);
   }
-
-  // The Handlebars code will be able to access the parameter values and build them into the page
-  return reply.view("/src/pages/index.hbs", params);
-});
-
-/**
- * Our POST route to handle and react to form submissions
- *
- * Accepts body data indicating the user choice
- */
-fastify.post("/", function (request, reply) {
-  // Build the params object to pass to the template
-  let params = { seo: seo };
-
-  // If the user submitted a color through the form it'll be passed here in the request body
-  let color = request.body.color;
-
-  // If it's not empty, let's try to find the color
-  if (color) {
-    // ADD CODE FROM TODO HERE TO SAVE SUBMITTED FAVORITES
-
-    // Load our color data file
-    const colors = require("./src/colors.json");
-
-    // Take our form submission, remove whitespace, and convert to lowercase
-    color = color.toLowerCase().replace(/\s/g, "");
-
-    // Now we see if that color is a key in our colors object
-    if (colors[color]) {
-      // Found one!
-      params = {
-        color: colors[color],
-        colorError: null,
-        seo: seo,
-      };
-    } else {
-      // No luck! Return the user value as the error property
-      params = {
-        colorError: request.body.color,
-        seo: seo,
-      };
-    }
-  }
-
-  // The Handlebars template will use the parameter values to update the page with the chosen color
-  return reply.view("/src/pages/index.hbs", params);
-});
-
-// Run the server and report out to the logs
-fastify.listen(
-  { port: process.env.PORT, host: "0.0.0.0" },
-  function (err, address) {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    console.log(`Your app is listening on ${address}`);
-  }
-);
+  
+};
+start();

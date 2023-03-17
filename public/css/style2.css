@@ -1,0 +1,113 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto Mono", monospace;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(6 5 6);
+  height: 80%;
+  color: aliceblue;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  background-color: rgb(24, 23, 31);
+}
+
+.leftHeader {
+  margin-left: 20px;
+  font-size: larger;
+}
+
+.rightHeader {
+  color: white;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 18px 28px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-right: 20px;
+  text-decoration: none;
+  background-color: #3a3dff;
+  border: 1px solid #3a3dff;
+  transition: 0.2s all;
+}
+
+.rightHeader:hover {
+  color: #3a3dff;
+  background-color: aliceblue;
+}
+.title {
+  font-size: 70px;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+}
+.blueTitle {
+  font-size: 90px;
+  color: #3a3dff;
+  font-weight: bold;
+}
+.credentialsContainer {
+  width: 70%;
+  background-color: rgb(24, 23, 31);
+  border-radius: 3px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
+  color: rgb(135, 135, 135);
+}
+.credentialsHeader {
+  height: max-content;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  border-bottom: solid 1px rgb(6 5 6);
+}
+.credentials {
+  height: 100%;
+  width: 90%;
+  padding: 10px;
+  word-break: break-word;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+}
+@media only screen and (max-width: 600px) {
+   .title{
+     font-size: 60px;
+     margin-left: 20px;
+   }
+   main{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      width: 100%;
+      overflow: hidden;
+   }
+   .credentialsContainer{
+     width: 88%;
+     height: fit-content;
+   }
+  }

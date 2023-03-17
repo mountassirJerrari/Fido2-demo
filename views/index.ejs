@@ -1,0 +1,66 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"
+        integrity="sha512-L4lHq2JI/GoKsERT8KYa72iCwfSrKYWEyaBxzJeeITM9Lub5vlTj8tufqYk056exhjo2QDEipJrg6zen/DDtoQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://kit.fontawesome.com/a690120af5.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div id="successMessage"></div>
+    <div id="message"></div>
+    <div class="title"> Connect a <b>USB authenticator</b> , or make sure your device has a built in one like
+        <b>TouchID</b> , and enter your <b>username</b> or <b>mail addresse</b>.
+    </div>
+    <div hidden id="canvasContainer">
+        <canvas id="canvas">
+        </canvas>
+    </div>
+
+    <div class="form" action="">
+        <div class="form_container">
+
+
+            <div class="label" place>enter username :</div>
+            <input placeholder="enter email or username" id="username" type="text">
+            <p onclick="toAuthenticationAnim()" class="smalltxt"> already have an account? connect </p>
+        </div>
+
+        <div id="progress"></div>
+        <div class="button_container">
+            <div>
+                <button class="button" onclick="registerRequest()" type="submit"> register </button>
+                or
+                <button onclick="registerRequestQr()"><i class="fa-solid fa-qrcode"></i></button>
+            </div>
+            <div>
+                <button class="button" onclick="auhenticateRequest()" type="submit"> authenticate</button>
+                or
+                <button onclick="autheticationRequestQr()"><i class="fa-solid fa-qrcode"></i></button>
+            </div>
+
+        </div>
+
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"
+        integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/animation.js"></script>
+   
+
+    <script src="/socket.io/socket.io.js "> </script>
+    <script src="js/bundle.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/qrCode.js"></script>
+    
+</body>
+
+</html>
