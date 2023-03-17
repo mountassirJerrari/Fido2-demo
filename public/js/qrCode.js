@@ -65,7 +65,7 @@ async function startRegisterQRceremony(options) {
 
     let roomId;
 
-    const socket = io("http://192.168.0.172:8000") ;
+    const socket = io("https://grape-alder-page.glitch.me") ;
     socket.on('roomJoined', (room) => {
         console.log(room);
         document.getElementById('canvasContainer').style.display = "flex";
@@ -110,7 +110,7 @@ async function startAuthQRceremony(options) {
 
     let roomId;
 
-    const socket = io("http://192.168.0.172:8000")
+    const socket = io("https://grape-alder-page.glitch.me")
     socket.on('roomJoined', (room) => {
         console.log(room);
         document.getElementById('canvasContainer').style.display = "flex";

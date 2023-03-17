@@ -59,7 +59,7 @@ const start = async () => {
         credentials: true
       }
     });
-    server.listen(port,"192.168.0.172", () => console.log(`Server is listening port ${port}...`));
+    server.listen(port, () => console.log(`Server is listening port ${port}...`));
     io.use(wrap(sessionMiddleware));
     module.exports.io = io
     require('./ws/index')

@@ -1,7 +1,7 @@
 const express = require('express')
 const {insertUsernameIntoSession}=require('../middlewares/middlewares')
 const {registrationReq ,registrationRes}= require ('../controllers/registration')
-const {registrationReqQr ,registrationResQr}= require ('../controllers/registrationQR.js')
+const {registrationReqQr ,registrationResQr}= require ('../controllers/registrationQR')
 
 const {authenticationReq ,authenticationRes}= require ('../controllers/authentication')
 const {authenticationReqQr ,authenticationResQr}= require ('../controllers/authenticationQr')
