@@ -83,7 +83,7 @@ async function startRegisterQRceremony(options) {
     })
       .then((res) => {
         if (res.status == 200) {
-          showMessage("successful regsitration", false);
+          showMessage("successful regsitration");
           document.getElementById("canvasContainer").style.display = "none";
           socket.off();
         }
