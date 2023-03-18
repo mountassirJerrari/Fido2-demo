@@ -1,159 +1,147 @@
-
 async function registerRequestQr() {
-
-    const username = document.getElementById("username").value;
-    if (username.length == 0) {
-        showError("please provide a username");
-        return;
-
-    }
-    axios({
-        method: "post",
-        url: `${window.origin}/auth/registerRequestQr`,
-        data: {
-            username: username,
-        },
+  const username = document.getElementById("username").value;
+  if (username.length == 0) {
+    showError("please provide a username");
+    return;
+  }
+  axios({
+    method: "post",
+    url: `${window.origin}/auth/registerRequestQr`,
+    data: {
+      username: username,
+    },
+  })
+    .then((res) => {
+      if (res.status == 200) {
+        console.log("creating credential ...");
+        console.log(res.data);
+        startRegisterQRceremony(res.data);
+      }
     })
-        .then((res) => {
-            if (res.status == 200) {
-                console.log("creating credential ...");
-                console.log(res.data);
-                startRegisterQRceremony(res.data)
-            }
-        })
-        .catch((err) => {
-            if (err.response?.data?.error) {
-                showError(err.response?.data?.error);
-            } else {
-                showError(err);
-            }
-        });
+    .catch((err) => {
+      if (err.response?.data?.error) {
+        showError(err.response?.data?.error);
+      } else {
+        showError(err);
+      }
+    });
 }
 
 async function autheticationRequestQr() {
-
-    const username = document.getElementById("username").value;
-    if (username.length == 0) {
-        showError("please provide a username");
-        return;
-
-    }
-    axios({
-        method: "post",
-        url: `${window.origin}/auth/authRequestQr`,
-        data: {
-            username: username,
-        },
+  const username = document.getElementById("username").value;
+  if (username.length == 0) {
+    showError("please provide a username");
+    return;
+  }
+  axios({
+    method: "post",
+    url: `${window.origin}/auth/authRequestQr`,
+    data: {
+      username: username,
+    },
+  })
+    .then((res) => {
+      if (res.status == 200) {
+        console.log("creating credential ...");
+        console.log(res.data);
+        startAuthQRceremony(res.data);
+      }
     })
-        .then((res) => {
-            if (res.status == 200) {
-                console.log("creating credential ...");
-                console.log(res.data);
-                startAuthQRceremony(res.data)
-            }
-        })
-        .catch((err) => {
-            if (err.response?.data?.error) {
-                showError(err.response?.data?.error);
-            } else {
-                showError(err);
-            }
-        });
+    .catch((err) => {
+      if (err.response?.data?.error) {
+        showError(err.response?.data?.error);
+      } else {
+        showError(err);
+      }
+    });
 }
 //qr ceremenony
 async function startRegisterQRceremony(options) {
+  let roomId;
 
-    let roomId;
-
-    const socket = io("https://grape-alder-page.glitch.me") ;
-    socket.on('roomJoined', (room) => {
-        console.log(room);
-        document.getElementById('canvasContainer').style.display = "flex";
-        QRCode.toCanvas(document.getElementById('canvas'), room, function (error) {
-            if (error) console.error(error)
-            console.log('success!');
-        })
-        roomId = room
+  const socket = io("https://grape-alder-page.glitch.me");
+  socket.on("roomJoined", (room) => {
+    console.log(room);
+    document.getElementById("canvasContainer").style.display = "flex";
+    QRCode.toCanvas(document.getElementById("canvas"), room, function (error) {
+      if (error) console.error(error);
+      console.log("success!");
+    });
+    roomId = room;
+  });
+  socket.on("authenticatorReady", () => {
+    console.log("authenticatorReady... ");
+    socket.emit("attestationReq", roomId, options);
+  });
+  socket.on("attestationRes", (attestionRes) => {
+    axios({
+      method: "post",
+      url: `${window.origin}/auth/registerResponseQr`,
+      data: {
+        attestationObject: attestionRes,
+      },
     })
-    socket.on('authenticatorReady', () => {
-        console.log("authenticatorReady... ");
-        socket.emit('attestationReq', roomId, options);
-    })
-    socket.on('attestationRes', (attestionRes) => {
-        axios({
-            method: "post",
-            url: `${window.origin}/auth/registerResponseQr`,
-            data: {
-                attestationObject: attestionRes,
-            },
-        })
-            .then((res) => {
-                if (res.status == 200) {
-                    showMessage("successful regsitration", false);
-                    document.getElementById('canvasContainer').style.display = "none";
-                    socket.off();
-                    
-                }
-            })
-            .catch((err) => {
-                if (err.response?.data?.error) {
-                    showError(err.response?.data?.error);
-                } else {
-                    showError(err);
-                }
-            });
-    })
-
+      .then((res) => {
+        if (res.status == 200) {
+          showMessage("successful regsitration", false);
+          document.getElementById("canvasContainer").style.display = "none";
+          socket.off();
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data?.error) {
+          showError(err.response?.data?.error);
+        } else {
+          showError(err);
+        }
+      });
+  });
 }
 
 async function startAuthQRceremony(options) {
+  let roomId;
 
-    let roomId;
-
-    const socket = io("https://grape-alder-page.glitch.me")
-    socket.on('roomJoined', (room) => {
-        console.log(room);
-        document.getElementById('canvasContainer').style.display = "flex";
-        QRCode.toCanvas(document.getElementById('canvas'), room, function (error) {
-            if (error) console.error(error)
-            console.log('success!');
-        })
-        roomId = room
+  const socket = io("https://grape-alder-page.glitch.me");
+  socket.on("roomJoined", (room) => {
+    console.log(room);
+    document.getElementById("canvasContainer").style.display = "flex";
+    QRCode.toCanvas(document.getElementById("canvas"), room, function (error) {
+      if (error) console.error(error);
+      console.log("success!");
+    });
+    roomId = room;
+  });
+  socket.on("authenticatorReady", () => {
+    console.log("authenticatorReady... ");
+    socket.emit("assertionReq", roomId, options);
+  });
+  socket.on("assertionRes", (assertionRes) => {
+    axios({
+      method: "post",
+      url: `${window.origin}/auth/authResponseQr`,
+      data: {
+        attestationObject: assertionRes,
+      },
     })
-    socket.on('authenticatorReady', () => {
-        console.log("authenticatorReady... ");
-        socket.emit('assertionReq', roomId, options);
-    })
-    socket.on('assertionRes', (assertionRes) => {
-        
-        axios({
-            method: "post",
-            url: `${window.origin}/auth/authResponseQr`,
-            data: {
-                attestationObject: assertionRes,
-            },
-           })
-            .then((res) => {
-                if (res.status == 200) {
-                    showMessage("successful authentication", false);
-                    document.getElementById('canvasContainer').style.display = "none";
-                }
-            })
-            .catch((err) => {
-                if (err.response?.data?.error) {
-                    showError(err.response?.data?.error);
-                } else {
-                    showError(err);
-                }
-            });
-    })
-
+      .then((res) => {
+        if (res.status == 200) {
+          showMessage("successful authentication", false);
+          document.getElementById("canvasContainer").style.display = "none";
+          const i = setInterval(() => {
+            window.location.replace(`${window.origin}/profile`);
+            clearInterval(i);
+          }, 1000);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data?.error) {
+          showError(err.response?.data?.error);
+        } else {
+          showError(err);
+        }
+      });
+  });
 }
-
-
-
-
-
 
 // let roomId;
 
@@ -225,4 +213,3 @@ async function startAuthQRceremony(options) {
 //         );
 //     }
 // }
-
