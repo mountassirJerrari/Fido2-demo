@@ -3,7 +3,7 @@ const base64 = require("base64-arraybuffer");
 const { Fido2Lib } = require("fido2-lib");
 // instanciation of the fido2 lib
 const f2l = new Fido2Lib({
-  timeout: 1231,
+  timeout: 120000,
   rpId: process.env.RP_ID,
   rpName: process.env.RP_NAME,
   origin: process.env.ORIGIN,

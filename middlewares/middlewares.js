@@ -46,6 +46,7 @@ const auth = (req,res,next)=>{
     return res.redirect('/')
   }
 const guest = (req,res,next)=>{
+  console.log('auth')
     if(!req.session?.auth)
     {
       return next()
