@@ -142,7 +142,7 @@ button:hover {
  }
  #canvasContainer{
      position: absolute;
-     z-index
+     z-index: 33;
      width: 100%;
      height: 100vh;
      background-color: #29295563;
