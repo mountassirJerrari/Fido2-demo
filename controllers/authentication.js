@@ -121,8 +121,9 @@ const authenticationRes = async (req, res) => {
     delete req.session.challenge;
     return res.json({ logedin: true });
   } catch (error) {
+    console.log(error)
     delete req.session.challenge;
-    return res.status.json({ error });
+    return res.status(400).json({ error });
   }
 };
 
